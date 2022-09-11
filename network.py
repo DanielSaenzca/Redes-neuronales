@@ -25,7 +25,7 @@ class Network(object):
         # __init__ es el constructor
         # net = network.Network([784,30,10]) = ([numero de neuronas en capa de entrada, capa intermedia o capa oculta, capa de salida])
         # net.SDG(training_data, 30, 10, 3.0, test_data=test_data)
-        # (training_data, epocas, tamaño del mini bach, learning rate,
+        # (training_data, epocas, tamaño del mini bach, learning rate, test_data=test_data)
         """The list ``sizes`` contains the number of neurons in the
         respective layers of the network.  For example, if the list
         was [2, 3, 1] then it would be a three-layer network, with the
@@ -53,7 +53,7 @@ class Network(object):
         # zip pega los vectores entrada por entrada
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):
-    #SGD: Stocastic Gradient Descent, eta=learning rate
+    #SGD: Stochastic Gradient Descent, eta=learning rate
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
