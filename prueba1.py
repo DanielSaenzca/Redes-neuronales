@@ -5,8 +5,10 @@ training_data, validation_data , test_data = mnist_loader.load_data_wrapper()
 training_data = list(training_data) #Convertimos los datos de entrenamiento en una lista
 #Un iterador es un objeto que me permite generar los elementos de una lista
 test_data = list(test_data)
-net=network.Network([784,30,10]) #Red neuronal con 784 neuronas de entrada, 30 en la capa intermedia y 10 en la capa de salida
-net.SGD( training_data, 30, 10, 3.0, test_data=test_data) #Entrenamos a la red con SGD (Stochastic Gradient Descent)
+#Red neuronal con 784 neuronas de entrada, 30 en la capa intermedia y 10 en la capa de salida
+net=network.Network([784,30,10]) 
+#Entrenamos a la red con SGD (Stochastic Gradient Descent)
+net.SGD( training_data, 30, 10, 3.0, test_data=test_data) 
 #(training_data, epochs, mini-batch_size, learning rate (eta), test_data=test_data)
 archivo = open("Datosred1.pkl",'wb') #archivo donde se guarda la red en disco, w=write, b=vamos a escribir algo que no es ascii, (como bits)
 pickle.dump(net,archivo)

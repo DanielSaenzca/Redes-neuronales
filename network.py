@@ -18,10 +18,17 @@ import random #Librería que genera números aleatorios
 
 # Third-party libraries
 import numpy as np # Es una libreria que maneja matrices y vectores de forma eficiente
-# as es para abreviar el nombre de la librería
+# 'as' es para abreviar el nombre de la librería
+class CrossEntropy(object):
+
+    def fn(a, y):
+        return np.sum(np.nan_to_num(-y*np.log(a)-(1-y)*np.log(1-a)))
+    def delta(z, a, y):
+        return (a-y)
+
 class Network(object):
 
-    def __init__(self, sizes): # Se definen los objetos dentro de esta clase
+    def __init__(self, sizes,  cost=CrossEntropy): # Se definen los objetos dentro de esta clase
         # __init__ es el constructor
         # net = network.Network([784,30,10]) = ([numero de neuronas en capa de entrada, capa intermedia o capa oculta, capa de salida])
         # net.SDG(training_data, 30, 10, 3.0, test_data=test_data)
@@ -111,13 +118,14 @@ class Network(object):
         activations = [x] # list to store all the activations, layer by layer
         zs = [] # list to store all the z vectors, layer by layer
         for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b #argumento de la sigmoide
+            z = np.dot(w, activation)+b #argumento de la sigmoide. np.dot(w, activation)=wx
             zs.append(z)
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
         delta = self.cost_derivative(activations[-1], y) * \
             sigmoid_prime(zs[-1])
+
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
         # Note that the variable l in the loop below is used a little
@@ -135,7 +143,7 @@ class Network(object):
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
         return (nabla_b, nabla_w)
 
-    def evaluate(self, test_data):
+    def evaluate(self, test_data): #Cuantos datos acertó en los datos de prueba
         """Return the number of test inputs for which the neural
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
