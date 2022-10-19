@@ -50,6 +50,9 @@ class Network(object):
         #np.random.randn(y, 1) genera matrices con entradas aleatorias
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
+        self.epsilon =0.00001
+        self.g2 = 0.
+        self.beta = 0.9
         #Los pesos (w) son una matriz que relaciona las flechas entre una capa y otra
 # Esto es para entrenar la red neuronal y poderla usar:
     def feedforward(self, a): #Evaluar la red neuronal (self, activaciones de la primera capa)
@@ -101,7 +104,10 @@ class Network(object):
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
+            
+            grad2 = np.sum([np.sum(np.power(w,2.)) for w in nabla_w])
+            g2 = self.beta*self.g2 + (1. - self.beta)*grad2 
+        self.weights = [w-(eta/len(mini_batch))/(np.sqrt(g2)+self.epsilon)*nw
                         for w, nw in zip(self.weights, nabla_w)]
         self.biases = [b-(eta/len(mini_batch))*nb
                        for b, nb in zip(self.biases, nabla_b)]
